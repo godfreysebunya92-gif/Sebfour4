@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEBFOUR Co. - Men's Fashion</title>
+    <meta name="description" content="SEBFOUR Co. - Premium Men's Fashion. Shop T-shirts, Jeans, Trousers, Hoodies, Shoes & more.">
+    <style>
+        :root {
+            --bg: #f8f6f2;
+            --surface: #ffffff;
+            --text: #1a1a1a;
+            --text-light: #5c5c5c;
+            --accent: #2c3e2d;
+            --accent-light: #4a6b4d;
+            --border: #e5e0d8;
+            --shadow: 0 2px 12px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: 0.25s ease;
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --whatsapp: #25d366;
+            --whatsapp-dark: #1fa851;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.6; }
+        .header { background:var(--surface); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:1000; box-shadow:var(--shadow); }
+        .header-inner { max-width:1400px; margin:0 auto; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+        .logo-placeholder { width:180px; height:55px; border:2px dashed #ccc; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.3rem; color:#999; background:#fafafa; flex-shrink:0; transition:var(--transition); cursor:pointer; text-transform:uppercase; }
+        .logo-placeholder:hover { border-color:var(--accent); color:var(--accent); background:#f0f7f1; }
+        .header-actions { display:flex; align-items:center; gap:16px; }
+        .cart-icon-btn { position:relative; background:var(--accent); color:#fff; border:none; padding:10px 18px; border-radius:30px; cursor:pointer; font-size:0.95rem; font-weight:600; display:flex; align-items:center; gap:8px; transition:var(--transition); white-space:nowrap; }
+        .cart-icon-btn:hover { background:var(--accent-light); transform:translateY(-1px); box-shadow:var(--shadow-lg); }
+        .cart-count { background:#e74c3c; color:#fff; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; min-width:24px; }
+        .whatsapp-header-btn { background:var(--whatsapp); color:#fff; border:none; padding:10px 18px; border-radius:30px; cursor:pointer; font-size:0.95rem; font-weight:600; display:flex; align-items:center; gap:8px; transition:var(--transition); text-decoration:none; }
+        .whatsapp-header-btn:hover { background:var(--whatsapp-dark); transform:translateY(-1px); box-shadow:var(--shadow-lg); }
+        .category-nav { background:var(--surface); border-bottom:1px solid var(--border); padding:0 24px; overflow-x:auto; }
+        .category-list { display:flex; gap:4px; max-width:1400px; margin:0 auto; padding:8px 0; flex-wrap:nowrap; }
+        .category-pill { padding:8px 16px; border-radius:24px; border:1.5px solid var(--border); background:#fff; cursor:pointer; font-size:0.85rem; font-weight:500; white-space:nowrap; transition:var(--transition); color:var(--text-light); flex-shrink:0; }
+        .category-pill:hover, .category-pill.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+        .main-container { max-width:1400px; margin:0 auto; padding:20px 24px; }
+        .products-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px; }
+        .product-card { background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; transition:var(--transition); display:flex; flex-direction:column; border:1px solid transparent; }
+        .product-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-3px); border-color:#ddd; }
+        .carousel-container { position:relative; width:100%; aspect-ratio:4/5; overflow:hidden; background:#eaeaea; }
+        .carousel-slides { display:flex; width:100%; height:100%; transition:transform 0.4s ease; }
+        .carousel-slide { min-width:100%; height:100%; flex-shrink:0; }
+        .carousel-slide img { width:100%; height:100%; object-fit:cover; }
+        .carousel-arrow { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,0.9); border:none; width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:1.1rem; font-weight:700; z-index:2; transition:var(--transition); display:flex; align-items:center; justify-content:center; color:#333; box-shadow:0 1px 4px rgba(0,0,0,0.15); }
+        .carousel-arrow:hover { background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.25); }
+        .carousel-arrow.prev { left:8px; }
+        .carousel-arrow.next { right:8px; }
+        .carousel-dots { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:2; }
+        .carousel-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.6); border:none; cursor:pointer; transition:var(--transition); padding:0; }
+        .carousel-dot.active { background:#fff; width:20px; border-radius:4px; }
+        .product-info { padding:14px 16px; display:flex; flex-direction:column; gap:8px; flex:1; }
+        .product-name { font-weight:700; font-size:0.95rem; }
+        .product-desc { font-size:0.78rem; color:var(--text-light); }
+        .color-swatches { display:flex; gap:7px; flex-wrap:wrap; }
+        .color-swatch { width:26px; height:26px; border-radius:50%; cursor:pointer; border:2px solid #ddd; transition:var(--transition); position:relative; flex-shrink:0; }
+        .color-swatch:hover { transform:scale(1.15); border-color:#888; }
+        .color-swatch.selected { border-color:var(--accent); box-shadow:0 0 0 3px rgba(44,62,45,0.2); }
+        .color-swatch.selected::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:700; color:#fff; text-shadow:0 0 2px #000; }
+        .size-selector { display:flex; gap:5px; flex-wrap:wrap; align-items:center; }
+        .size-selector label { font-size:0.78rem; font-weight:600; color:var(--text-light); }
+        .size-option { padding:5px 10px; border-radius:4px; border:1.5px solid var(--border); background:#fff; cursor:pointer; font-size:0.75rem; font-weight:500; transition:var(--transition); }
+        .size-option:hover, .size-option.selected { background:var(--accent); color:#fff; border-color:var(--accent); }
+        .qty-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+        .qty-row label { font-size:0.78rem; font-weight:600; color:var(--text-light); }
+        .qty-input { width:55px; padding:6px 8px; border-radius:6px; border:1.5px solid var(--border); text-align:center; font-size:0.9rem; font-weight:600; }
+        .price-display { font-weight:700; font-size:1.1rem; color:var(--accent); }
+        .price-detail { font-size:0.7rem; color:var(--text-light); }
+        .card-buttons { display:flex; gap:8px; flex-wrap:wrap; }
+        .btn-add-cart { flex:1; min-width:100px; padding:10px 14px; background:var(--accent); color:#fff; border:none; border-radius:24px; cursor:pointer; font-weight:600; font-size:0.85rem; transition:var(--transition); }
+        .btn-add-cart:hover { background:var(--accent-light); box-shadow:var(--shadow-lg); }
+        .btn-whatsapp-sm { padding:10px 14px; background:var(--whatsapp); color:#fff; border:none; border-radius:24px; cursor:pointer; font-weight:600; font-size:0.85rem; transition:var(--transition); text-decoration:none; display:inline-flex; align-items:center; gap:5px; }
+        .btn-whatsapp-sm:hover { background:var(--whatsapp-dark); box-shadow:var(--shadow-lg); }
+        .cart-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+        .cart-overlay.open { opacity:1; pointer-events:auto; }
+        .cart-panel { position:fixed; top:0; right:-440px; width:420px; max-width:90vw; height:100vh; background:#fff; z-index:2001; box-shadow:-4px 0 24px rgba(0,0,0,0.2); transition:right 0.35s; display:flex; flex-direction:column; border-radius:16px 0 0 16px; }
+        .cart-panel.open { right:0; }
+        .cart-header { padding:20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; font-weight:700; font-size:1.2rem; }
+        .cart-close { background:none; border:none; font-size:1.5rem; cursor:pointer; color:#666; }
+        .cart-close:hover { background:#f0f0f0; color:#000; }
+        .cart-items { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; }
+        .cart-item { display:flex; gap:12px; padding:12px; background:#fafafa; border-radius:var(--radius-sm); align-items:center; flex-wrap:wrap; }
+        .cart-item-img { width:60px; height:75px; border-radius:6px; object-fit:cover; background:#eaeaea; }
+        .cart-item-info { flex:1; min-width:140px; }
+        .cart-item-name { font-weight:600; font-size:0.9rem; }
+        .cart-item-variant { font-size:0.75rem; color:var(--text-light); }
+        .cart-item-price { font-weight:700; color:var(--accent); font-size:0.9rem; }
+        .cart-item-remove { background:#e74c3c; color:#fff; border:none; padding:6px 10px; border-radius:16px; cursor:pointer; font-size:0.7rem; font-weight:600; }
+        .cart-item-remove:hover { background:#c0392b; }
+        .cart-footer { padding:20px; border-top:1px solid var(--border); }
+        .cart-total { font-weight:700; font-size:1.3rem; margin-bottom:12px; display:flex; justify-content:space-between; }
+        .cart-whatsapp-btn { width:100%; padding:14px; background:var(--whatsapp); color:#fff; border:none; border-radius:30px; cursor:pointer; font-weight:700; font-size:1rem; display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; }
+        .cart-whatsapp-btn:hover { background:var(--whatsapp-dark); box-shadow:var(--shadow-lg); }
+        .cart-empty { text-align:center; padding:40px; color:#999; }
+        .floating-whatsapp { position:fixed; bottom:24px; right:24px; z-index:1500; background:var(--whatsapp); color:#fff; width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.6rem; box-shadow:0 4px 18px rgba(37,211,102,0.4); cursor:pointer; transition:var(--transition); text-decoration:none; }
+        .floating-whatsapp:hover { transform:scale(1.1); box-shadow:0 6px 24px rgba(37,211,102,0.55); }
+        .notification { position:fixed; bottom:100px; right:24px; background:#2c3e2d; color:#fff; padding:12px 20px; border-radius:30px; font-weight:600; font-size:0.9rem; z-index:3000; opacity:0; transform:translateY(20px); transition:all 0.35s; pointer-events:none; box-shadow:var(--shadow-lg); }
+        .notification.show { opacity:1; transform:translateY(0); }
+        @media (max-width:768px) {
+            .header-inner { padding:10px 12px; gap:10px; }
+            .logo-placeholder { width:130px; height:40px; font-size:1rem; }
+            .products-grid { grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:12px; }
+            .main-container { padding:12px; }
+            .cart-panel { width:95vw; right:-95vw; }
+            .category-pill { padding:6px 12px; font-size:0.75rem; }
+            .floating-whatsapp { width:48px; height:48px; font-size:1.3rem; bottom:16px; right:16px; }
+        }
+        @media (max-width:480px) {
+            .products-grid { grid-template-columns:1fr 1fr; gap:8px; }
+            .product-info { padding:8px 10px; gap:4px; }
+            .product-name { font-size:0.8rem; }
+            .btn-add-cart, .btn-whatsapp-sm { font-size:0.7rem; padding:7px 10px; }
+            .carousel-arrow { width:26px; height:26px; font-size:0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo-placeholder" title="Upload your SEBFOUR Co. logo here">🏷 SEBFOUR Co.</div>
+            <div class="header-actions">
+                <button class="cart-icon-btn" onclick="toggleCart()">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+                <a class="whatsapp-header-btn" id="whatsappHeaderBtn" href="#" target="_blank" rel="noopener">💬 WhatsApp</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- CATEGORY NAV -->
+    <nav class="category-nav" id="categoryNav">
+        <div class="category-list" id="categoryList"></div>
+    </nav>
+
+    <!-- MAIN -->
+    <div class="main-container">
+        <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <!-- CART OVERLAY -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            🛒 Your Cart
+            <button class="cart-close" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">Your cart is empty.<br>Add some stylish pieces!</div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Total:</span> <span id="cartTotal">0 UGX</span></div>
+            <a class="cart-whatsapp-btn" id="cartWhatsappBtn" href="#" target="_blank" rel="noopener">📱 Order via WhatsApp (full cart)</a>
+        </div>
+    </div>
+
+    <!-- FLOATING WHATSAPP -->
+    <a class="floating-whatsapp" id="floatingWhatsapp" href="#" target="_blank" rel="noopener" title="Chat or send your cart">💬</a>
+
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        (function() {
+            // ╔══════════════════════════════════════════════════════╗
+            // ║  ✏️  PRODUCT IMAGE OVERRIDES – YOUR REAL PHOTOS   ║
+            // ╚══════════════════════════════════════════════════════╝
+            const productImageOverrides = {
+                // Add your real product images here
+            };
+
+            // ──────────────────────────────────────
+            // CATEGORY DEFINITIONS
+            // ──────────────────────────────────────
+            const categoryDefs = [
+                { slug: 'plain-roundneck', name: 'Plain Roundneck T-shirts', type: 'top', sizes: ['S','M','XL','XXL','3XL'], colors: ['#1a1a1a','#f9f9f9','#1a2744','#7a7a7a','#c0392b'], count: 8, desc: 'Classic plain roundneck tee. Soft cotton, comfortable fit.', imgTheme: 'plain-tee' },
+                { slug: 'stripe-roundneck', name: 'Stripe Roundneck T-shirts', type: 'top', sizes: ['S','M','XL','XXL','3XL'], colors: ['#1a2744','#f9f9f9','#36454f','#c0392b'], count: 7, desc: 'Stylish striped roundneck. Breathable fabric.', imgTheme: 'stripe-tee' },
+                { slug: 'longsleeve-tshirt', name: 'Long-Sleeved T-shirts', type: 'top', sizes: ['S','M','XL','XXL','3XL'], colors: ['#1a1a1a','#7a7a7a','#1a2744','#556b2f','#f9f9f9'], count: 8, desc: 'Comfortable long-sleeve tee for cooler days.', imgTheme: 'ls-tee' },
+                { slug: 'jeans', name: 'Jeans', type: 'bottom', sizes: ['30','31','32','33','34','36','38','40'], colors: ['#1a2744','#36454f','#1a1a1a','#6b3a2a'], count: 7, desc: 'Premium denim jeans. Durable & stylish.', imgTheme: 'jeans' },
+                { slug: 'khaki-trousers', name: 'Khaki Trousers', type: 'bottom', sizes: ['30','31','32','33','34','36','38','40'], colors: ['#a89a7e','#556b2f','#36454f','#f5f0e8'], count: 6, desc: 'Smart khaki trousers for formal & casual looks.', imgTheme: 'khaki' },
+                { slug: 'jumpers-hoodies', name: 'Jumpers/Hoodies', type: 'top', sizes: ['S','M','XL','XXL','3XL'], colors: ['#1a1a1a','#7a7a7a','#1a2744','#c0392b','#556b2f'], count: 8, desc: 'Warm & cozy jumpers and hoodies.', imgTheme: 'hoodie' },
+                { slug: 'longsleeve-shirts', name: 'Long-Sleeved Shirts', type: 'top', sizes: ['S','M','XL','XXL','3XL'], colors: ['#f9f9f9','#1a2744','#a89a7e','#36454f','#c0392b'], count: 7, desc: 'Sharp long-sleeved button-up shirts.', imgTheme: 'ls-shirt' },
+                { slug: 'shortsleeve-shirts', name: 'Short-Sleeved Shirts', type: 'top', sizes: ['S','M','XL','XXL','3XL'], colors: ['#f9f9f9','#1a2744','#556b2f','#c0392b','#7a7a7a'], count: 8, desc: 'Breezy short-sleeved shirts for summer.', imgTheme: 'ss-shirt' },
+                { slug: 'sweaterpants', name: 'Sweaterpants', type: 'bottom', sizes: ['30','31','32','33','34','36','38','40'], colors: ['#1a1a1a','#7a7a7a','#36454f'], count: 6, desc: 'Comfortable sweaterpants for lounging.', imgTheme: 'sweatpant' },
+                { slug: 'shorts', name: 'Shorts', type: 'bottom', sizes: ['30','31','32','33','34','36','38','40'], colors: ['#a89a7e','#1a2744','#1a1a1a','#f5f0e8','#556b2f'], count: 7, desc: 'Casual shorts for warm weather.', imgTheme: 'shorts' },
+                { slug: 'sneakers-formal', name: 'Sneakers/Formal Shoes', type: 'footwear', sizes: ['40','41','42','43','44','45'], colors: ['#1a1a1a','#6b3a2a','#f9f9f9','#36454f'], count: 8, desc: 'Stylish sneakers & formal shoes.', imgTheme: 'sneaker' },
+                { slug: 'open-shoes', name: 'Open Shoes', type: 'footwear', sizes: ['40','41','42','43','44','45'], colors: ['#6b3a2a','#1a1a1a','#a89a7e'], count: 6, desc: 'Comfortable open shoes & sandals.', imgTheme: 'openshoe' },
+                { slug: 'underwear', name: 'Underwear', type: 'underwear', sizes: ['S','M','XL','XXL','3XL'], colors: ['#1a1a1a','#f9f9f9','#7a7a7a','#1a2744'], count: 5, desc: 'Soft cotton underwear for daily comfort.', imgTheme: 'underwear' },
+                { slug: 'jean-jackets', name: 'Jean Jackets', type: 'top', sizes: ['S','M','XL','XXL','3XL'], colors: ['#1a2744','#36454f','#1a1a1a','#7a7a7a'], count: 6, desc: 'Classic denim jackets. Layer up in style.', imgTheme: 'jean-jacket' },
+                { slug: 'armless', name: 'Armless', type: 'top', sizes: ['S','M','XL','XXL','3XL'], colors: ['#1a1a1a','#f9f9f9','#7a7a7a','#c0392b'], count: 5, desc: 'Sleeveless tops for a bold look.', imgTheme: 'armless' },
+                { slug: 'beltless-trousers', name: 'Beltless Trousers', type: 'bottom', sizes: ['30','31','32','33','34','36','38','40'], colors: ['#1a1a1a','#36454f','#a89a7e','#556b2f'], count: 5, desc: 'Modern beltless trousers with clean lines.', imgTheme: 'beltless' },
+                { slug: 'cargopants', name: 'Cargopants', type: 'bottom', sizes: ['30','31','32','33','34','36','38','40'], colors: ['#a89a7e','#556b2f','#1a1a1a','#36454f'], count: 6, desc: 'Utility cargopants with multiple pockets.', imgTheme: 'cargo' },
+                { slug: 'rubbertshirts', name: 'Rubber T-shirts', type: 'top', sizes: ['S','M','XL','XXL','3XL'], colors: ['#1a1a1a','#c0392b','#1a2744','#f9f9f9','#7a7a7a'], count: 5, desc: 'Unique rubber-print t-shirts.', imgTheme: 'rubber-tee' },
+            ];
+
+            // ──────────────────────────────────────
+            // GENERATE PRODUCTS
+            // ──────────────────────────────────────
+            const allProducts = [];
+            let productIdCounter = 1;
+
+            categoryDefs.forEach(cat => {
+                for (let i = 1; i <= cat.count; i++) {
+                    const productKey = `${cat.slug}-${i}`;
+                    const override = productImageOverrides[productKey] || null;
+
+                    let images;
+                    if (override) {
+                        images = {};
+                        cat.colors.forEach(color => {
+                            images[color] = override[color] || Object.values(override)[0] || [];
+                        });
+                    } else {
+                        images = {};
+                        cat.colors.forEach(colorHex => {
+                            const cleanHex = colorHex.replace('#', '');
+                            images[colorHex] = [
+                                `https://placehold.co/400x500/${cleanHex}/ffffff?text=${encodeURIComponent(cat.imgTheme + '-front')}`,
+                                `https://placehold.co/400x500/${cleanHex}/f0f0f0?text=${encodeURIComponent(cat.imgTheme + '-back')}`,
+                                `https://placehold.co/400x500/${cleanHex}/e8e8e8?text=${encodeURIComponent(cat.imgTheme + '-detail')}`,
+                            ];
+                        });
+                    }
+
+                    allProducts.push({
+                        id: productIdCounter++,
+                        name: `${cat.name} #${i}`,
+                        category: cat.slug,
+                        categoryName: cat.name,
+                        type: cat.type,
+                        sizes: [...cat.sizes],
+                        colors: [...cat.colors],
+                        selectedColor: cat.colors[0],
+                        selectedSize: cat.sizes[0],
+                        quantity: 1,
+                        desc: cat.desc,
+                        imgTheme: cat.imgTheme,
+                        images: images,
+                        currentSlide: 0,
+                    });
+                }
+            });
+
+            // ──────────────────────────────────────
+            // CART & PRICING
+            // ──────────────────────────────────────
+            let cart = JSON.parse(localStorage.getItem('sebfour_cart') || '[]');
+            let activeCategory = 'all';
+            const whatsappNumber = '+256757306640';
+
+            function getPriceForQty(qty) {
+                if (qty >= 3) return Math.round(2500 + (qty - 3) * 800);
+                if (qty === 2) return 1800;
+                return 1000;
+            }
+            function getUnitPrice(qty) { return Math.round(getPriceForQty(qty) / qty); }
+
+            function saveCart() { localStorage.setItem('sebfour_cart', JSON.stringify(cart)); updateCartUI(); updateAllWhatsAppLinks(); }
+            function addToCart(prod) {
+                const exist = cart.findIndex(item => item.productId === prod.productId && item.color === prod.color && item.size === prod.size);
+                if (exist >= 0) cart[exist].quantity += prod.quantity;
+                else cart.push({ cartItemId: Date.now(), productId: prod.productId, name: prod.name, color: prod.color, size: prod.size, quantity: prod.quantity, images: prod.images || [] });
+                recalcCartPrices(); saveCart(); showNotification('✅ Added to cart!');
+            }
+            function removeFromCart(cartItemId) { cart = cart.filter(i => i.cartItemId !== cartItemId); recalcCartPrices(); saveCart(); }
+            function recalcCartPrices() {
+                const qtyMap = {};
+                cart.forEach(i => { qtyMap[i.productId] = (qtyMap[i.productId] || 0) + i.quantity; });
+                cart.forEach(i => {
+                    const totalSame = qtyMap[i.productId] || i.quantity;
+                    const totalPrice = getPriceForQty(totalSame);
+                    const unit = Math.round(totalPrice / totalSame);
+                    i.unitPrice = unit;
+                    i.subtotal = unit * i.quantity;
+                });
+            }
+            function getCartTotal() { return cart.reduce((s, i) => s + (i.subtotal || i.quantity*1000), 0); }
+            function getCartCount() { return cart.reduce((s, i) => s + i.quantity, 0); }
+
+            // 🟢 FIXED: Use real newlines and encode the whole message
+            function buildCartWhatsAppMessage() {
+                if (cart.length === 0) return '';
+                let msg = `🛒 *SEBFOUR Co. - New Order*\n\n`;
+                cart.forEach((item, idx) => {
+                    msg += `${idx+1}. *${item.name}*\n   Color: ${item.color} | Size: ${item.size} | Qty: ${item.quantity} | ${item.subtotal} UGX\n`;
+                });
+                msg += `\n💰 *Total: ${getCartTotal().toLocaleString()} UGX*\n\nPlease confirm my order. Thank you!`;
+                return msg;
+            }
+
+            function updateAllWhatsAppLinks() {
+                const msg = buildCartWhatsAppMessage();
+                const base = `https://wa.me/${whatsappNumber.replace('+', '')}`;
+                const full = msg ? `${base}?text=${encodeURIComponent(msg)}` : base;
+                document.getElementById('whatsappHeaderBtn').href = full;
+                document.getElementById('floatingWhatsapp').href = full;
+                document.getElementById('cartWhatsappBtn').href = full;
+            }
+
+            function updateCartUI() {
+                document.getElementById('cartCount').textContent = getCartCount();
+                const itemsEl = document.getElementById('cartItems');
+                if (cart.length === 0) {
+                    itemsEl.innerHTML = '<div class="cart-empty">Your cart is empty.</div>';
+                } else {
+                    itemsEl.innerHTML = cart.map(item => {
+                        const img = (item.images && item.images[0]) || 'https://placehold.co/60x75/ddd/999?text=Item';
+                        return `<div class="cart-item">
+                            <img class="cart-item-img" src="${img}" alt="${item.name}">
+                            <div class="cart-item-info">
+                                <div class="cart-item-name">${item.name}</div>
+                                <div class="cart-item-variant">Color: ${item.color} | Size: ${item.size} | Qty: ${item.quantity}</div>
+                                <div class="cart-item-price">${item.subtotal} UGX (${item.unitPrice} UGX each)</div>
+                            </div>
+                            <button class="cart-item-remove" onclick="window.removeFromCart(${item.cartItemId})">Remove</button>
+                        </div>`;
+                    }).join('');
+                }
+                document.getElementById('cartTotal').textContent = getCartTotal().toLocaleString() + ' UGX';
+                updateAllWhatsAppLinks();
+            }
+
+            function toggleCart() {
+                const panel = document.getElementById('cartPanel'), overlay = document.getElementById('cartOverlay');
+                const open = panel.classList.contains('open');
+                panel.classList.toggle('open', !open);
+                overlay.classList.toggle('open', !open);
+            }
+            window.removeFromCart = (id) => removeFromCart(id);
+            window.toggleCart = toggleCart;
+            function showNotification(msg) {
+                const n = document.getElementById('notification');
+                n.textContent = msg; n.classList.add('show');
+                clearTimeout(n._timeout); n._timeout = setTimeout(() => n.classList.remove('show'), 2000);
+            }
+
+            // ──────────────────────────────────────
+            // RENDER & INTERACTION
+            // ──────────────────────────────────────
+            function renderProducts(filter = 'all') {
+                const grid = document.getElementById('productsGrid');
+                const filtered = filter === 'all' ? allProducts : allProducts.filter(p => p.category === filter);
+                grid.innerHTML = filtered.map(p => {
+                    const imgs = p.images[p.selectedColor] || Object.values(p.images)[0];
+                    const slidesHTML = imgs.map((src, i) => `<div class="carousel-slide"><img src="${src}" alt="${p.name}" loading="${i===0?'eager':'lazy'}" onerror="this.src='https://placehold.co/400x500/e0e0e0/888?text=SEBFOUR'"></div>`).join('');
+                    const swatches = p.colors.map(c => `<button class="color-swatch${c===p.selectedColor?' selected':''}" style="background:${c};" data-color="${c}"></button>`).join('');
+                    const sizes = p.sizes.map(s => `<button class="size-option${s===p.selectedSize?' selected':''}" data-size="${s}">${s}</button>`).join('');
+                    const priceTotal = getPriceForQty(p.quantity);
+                    const unit = getUnitPrice(p.quantity);
+                    return `<div class="product-card" data-product-id="${p.id}">
+                        <div class="carousel-container">
+                            <div class="carousel-slides" style="transform:translateX(0%);">${slidesHTML}</div>
+                            <button class="carousel-arrow prev" onclick="window.slideCarousel(${p.id},-1)">‹</button>
+                            <button class="carousel-arrow next" onclick="window.slideCarousel(${p.id},1)">›</button>
+                            <div class="carousel-dots">${imgs.map((_,i) => `<button class="carousel-dot${i===0?' active':''}" onclick="window.goToSlide(${p.id},${i})"></button>`).join('')}</div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-name">${p.name}</div>
+                            <div class="product-desc">${p.desc}</div>
+                            <div class="color-swatches">${swatches}</div>
+                            <div class="size-selector"><label>Size:</label> ${sizes}</div>
+                            <div class="qty-row"><label>Qty:</label> <input class="qty-input" type="number" min="1" max="99" value="${p.quantity}" onchange="window.updateQty(${p.id}, this.value)"></div>
+                            <div class="price-display">${priceTotal.toLocaleString()} UGX</div>
+                            <div class="price-detail">(${unit.toLocaleString()} UGX each for ${p.quantity} item${p.quantity>1?'s':''})</div>
+                            <div class="card-buttons">
+                                <button class="btn-add-cart" onclick="window.addProductToCart(${p.id})">🛒 Add to Cart</button>
+                                <button class="btn-whatsapp-sm" onclick="window.orderSingle(${p.id})">📱 Order</button>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+                attachEvents();
+            }
+
+            function attachEvents() {
+                document.querySelectorAll('.color-swatch').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const card = this.closest('.product-card');
+                        const pid = parseInt(card.dataset.productId);
+                        const product = allProducts.find(p => p.id === pid);
+                        if (!product) return;
+                        product.selectedColor = this.dataset.color;
+                        card.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+                        this.classList.add('selected');
+                        updateCarousel(card, product);
+                    });
+                });
+                document.querySelectorAll('.size-option').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const card = this.closest('.product-card');
+                        const product = allProducts.find(p => p.id === parseInt(card.dataset.productId));
+                        if (!product) return;
+                        product.selectedSize = this.dataset.size;
+                        card.querySelectorAll('.size-option').forEach(s => s.classList.remove('selected'));
+                        this.classList.add('selected');
+                    });
+                });
+            }
+
+            function updateCarousel(card, product) {
+                const imgs = product.images[product.selectedColor] || Object.values(product.images)[0];
+                card.querySelectorAll('.carousel-slide img').forEach((img, i) => { if(imgs[i]) img.src = imgs[i]; });
+                const dots = card.querySelector('.carousel-dots');
+                dots.innerHTML = imgs.map((_, i) => `<button class="carousel-dot${i===0?' active':''}" onclick="window.goToSlide(${product.id},${i})"></button>`).join('');
+                product.currentSlide = 0;
+                card.querySelector('.carousel-slides').style.transform = 'translateX(0%)';
+            }
+
+            window.slideCarousel = (pid, dir) => {
+                const p = allProducts.find(x => x.id === pid); if(!p) return;
+                const imgs = p.images[p.selectedColor] || Object.values(p.images)[0];
+                p.currentSlide = (p.currentSlide + dir + imgs.length) % imgs.length;
+                const card = document.querySelector(`.product-card[data-product-id="${pid}"]`);
+                if(card) {
+                    card.querySelector('.carousel-slides').style.transform = `translateX(-${p.currentSlide*100}%)`;
+                    card.querySelectorAll('.carousel-dot').forEach((d,i) => d.classList.toggle('active', i===p.currentSlide));
+                }
+            };
+            window.goToSlide = (pid, idx) => {
+                const p = allProducts.find(x => x.id === pid); if(!p) return;
+                p.currentSlide = idx;
+                const card = document.querySelector(`.product-card[data-product-id="${pid}"]`);
+                if(card) {
+                    card.querySelector('.carousel-slides').style.transform = `translateX(-${idx*100}%)`;
+                    card.querySelectorAll('.carousel-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+                }
+            };
+            window.updateQty = (pid, val) => {
+                const p = allProducts.find(x => x.id === pid); if(!p) return;
+                p.quantity = Math.max(1, Math.min(99, parseInt(val)||1));
+                const card = document.querySelector(`.product-card[data-product-id="${pid}"]`);
+                if(card) {
+                    const total = getPriceForQty(p.quantity), unit = getUnitPrice(p.quantity);
+                    card.querySelector('.price-display').textContent = total.toLocaleString() + ' UGX';
+                    card.querySelector('.price-detail').textContent = `(${unit.toLocaleString()} UGX each for ${p.quantity} item${p.quantity>1?'s':''})`;
+                }
+            };
+            window.addProductToCart = (pid) => {
+                const p = allProducts.find(x => x.id === pid); if(!p) return;
+                addToCart({ productId: p.id, name: p.name, color: p.selectedColor, size: p.selectedSize, quantity: p.quantity, images: p.images[p.selectedColor] || Object.values(p.images)[0] });
+            };
+            // 🟢 FIXED: per‑product order also uses encoding
+            window.orderSingle = (pid) => {
+                const p = allProducts.find(x => x.id === pid); if(!p) return;
+                const msg = `🛒 *SEBFOUR Co. - Order*\n\n*${p.name}*\nColor: ${p.selectedColor}\nSize: ${p.selectedSize}\nQty: ${p.quantity}\nTotal: ${getPriceForQty(p.quantity).toLocaleString()} UGX\n\nPlease confirm.`;
+                window.open(`https://wa.me/${whatsappNumber.replace('+','')}?text=${encodeURIComponent(msg)}`, '_blank');
+            };
+
+            // Category nav
+            function renderCategoryNav() {
+                const nav = document.getElementById('categoryList');
+                const cats = [{ slug:'all', name:'🏠 All Products' }, ...categoryDefs.map(c => ({ slug:c.slug, name:c.name }))];
+                nav.innerHTML = cats.map(c => `<button class="category-pill${c.slug===activeCategory?' active':''}" data-cat="${c.slug}">${c.name}</button>`).join('');
+                nav.querySelectorAll('.category-pill').forEach(btn => btn.addEventListener('click', function() {
+                    activeCategory = this.dataset.cat;
+                    nav.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    renderProducts(activeCategory);
+                }));
+            }
+
+            // Init
+            recalcCartPrices(); updateCartUI(); renderCategoryNav(); renderProducts('all');
+            updateAllWhatsAppLinks();
+            document.addEventListener('keydown', e => { if(e.key==='Escape' && document.getElementById('cartPanel').classList.contains('open')) toggleCart(); });
+            console.log('✅ SEBFOUR Co. – WhatsApp messages now include all order details.');
+        })();
+    </script>
+</body>
+</html>
